@@ -1,93 +1,3 @@
-
-
-// // import React, { useEffect, useState } from 'react';
-// // import mapLayer from './MapLayer/mapLayer';
-// // import HeatMapLayer from './HeatMapLayer/heatMapLayer';
-// // import L from "leaflet";
-
-
-
-// // const MapComponent = () => {
-// //     const heatMapLayer = HeatMapLayer();
-
-// //     useEffect(() => {
-// //         const map = L.map('map', {
-// //             center: [51.505, -0.09],
-// //             zoom: 3
-// //         });
-
-// //         mapLayer.addTo(map);
-// //         heatMapLayer.addTo(map);
-
-// //         return () => {
-// //             map.remove();
-// //         }
-
-
-// //     }, []);
-// //     return (
-// //         <div>
-// //             <div id="map" style={{ height: '500px' }}></div>
-
-// //             <div>
-// //                 <button onClick={() => { }}>2013</button>
-// //             </div>
-// //             <div id="content">
-// //                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis</p>
-// //             </div>
-// //         </div>
-// //     );
-// // };
-
-// // export default MapComponent;
-// import React, { useEffect, useState } from "react";
-// import mapLayer from "./MapLayer/mapLayer";
-// import HeatMapLayer from "./HeatMapLayer/heatMapLayer";
-// import L from "leaflet";
-
-// const MapComponent = () => {
-//     const [map, setMap] = useState(null);
-
-//     useEffect(() => {
-//         const mapInstance = L.map("map", {
-//             center: [51.505, -0.09],
-//             zoom: 3,
-//         });
-
-//         mapLayer.addTo(mapInstance);
-//         setMap(mapInstance);
-
-//         return () => {
-//             mapInstance.remove();
-//         };
-//     }, []);
-
-//     return (
-//         <div>
-//             <div id="map" style={{ height: "500px" }}>{map && <HeatMapLayer map={map} year={2013} />}</div>
-
-//             <div>
-//                 <button onClick={() => { }}>2013</button>
-//                 <button onClick={() => { }}>2014</button>
-//                 <button onClick={() => { }}>2015</button>
-//                 <button onClick={() => { }}>2016</button>
-//                 <button onClick={() => { }}>2017</button>
-//                 <button onClick={() => { }}>2018</button>
-//                 <button onClick={() => { }}>2019</button>
-//                 <button onClick={() => { }}>2020</button>
-//                 <button onClick={() => { }}>2021</button>
-//                 <button onClick={() => { }}>2022</button>
-//             </div>
-//             <div id="content">
-//                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis</p>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default MapComponent;
-
-
 import React, { useEffect, useState } from "react";
 import mapLayer from "./MapLayer/mapLayer";
 import HeatMapLayer from "./HeatMapLayer/heatMapLayer";
@@ -96,6 +6,17 @@ import L from "leaflet";
 const MapComponent = () => {
     const [map, setMap] = useState(null);
     const [year, setYear] = useState(2013);
+
+    const updateData = (updatedData) => {
+
+        setData((prevData) =>
+            prevData.map((item) =>
+                item.latitude === updatedData.latitude && item.longitude === updatedData.longitude
+                    ? { ...item, ...updatedData }
+                    : item
+            )
+        );
+    };
 
     useEffect(() => {
         const mapInstance = L.map("map", {
@@ -113,7 +34,9 @@ const MapComponent = () => {
 
     return (
         <div>
-            <div id="map" style={{ height: "500px" }}>{map && <HeatMapLayer map={map} year={year} />}</div>
+            <div id="map" style={{ height: "500px" }}>
+                {map && <HeatMapLayer map={map} year={year} updateData={updateData} />}
+            </div>
             <div className="year-container">
                 <button onClick={() => setYear(2013)}>2013</button>
                 <button onClick={() => setYear(2014)}>2014</button>
@@ -126,11 +49,13 @@ const MapComponent = () => {
                 <button onClick={() => setYear(2021)}>2021</button>
                 <button onClick={() => setYear(2022)}>2022</button>
             </div>
-            <div id="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis</p>
+            <div id="map2">
+
             </div>
         </div>
     );
 };
 
 export default MapComponent;
+
+
